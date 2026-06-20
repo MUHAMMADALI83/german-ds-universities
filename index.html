@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Science in Germany — Public University Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #21262d;
+    --accent: #f78166;
+    --accent2: #79c0ff;
+    --accent3: #56d364;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --warn: #d29922;
+    --tag-bg: #1f2b3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,17,23,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    backdrop-filter: blur(8px);
+  }
+  .nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 span { color: var(--accent2); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* FILTER BAR */
+  .filter-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+  }
+  .filter-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+  .filter-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .search-input {
+    margin-left: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent2); }
+  .search-input::placeholder { color: var(--muted); }
+
+  /* MAIN */
+  main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+  .section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* UNIVERSITY CARDS */
+  .uni-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+
+  .uni-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: pointer;
+  }
+  .uni-card:hover { border-color: var(--accent2); transform: translateY(-1px); }
+  .uni-card.hidden { display: none; }
+
+  .card-header {
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-header-left {}
+  .uni-rank {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .uni-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; line-height: 1.2; }
+  .uni-location {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .tag-en { background: #1a3a2a; color: var(--accent3); }
+  .tag-de { background: #2a1a3a; color: #bf8fff; }
+  .tag-both { background: #1a2d3a; color: var(--accent2); }
+  .tag-free { background: #2a2a1a; color: var(--warn); }
+  .tag-fee { background: #2a1a1a; color: var(--accent); }
+
+  .card-body { padding: 1.4rem 1.6rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; }
+  @media(max-width: 768px) { .card-body { grid-template-columns: 1fr; } }
+
+  .info-block {}
+  .info-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .info-val { font-size: 13.5px; color: var(--text); font-weight: 400; }
+  .info-val strong { color: var(--accent2); }
+
+  .deadline-chip {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-bottom: 3px;
+  }
+  .chip-winter { background: #1a2a3a; color: var(--accent2); border: 1px solid #2a4a6a; }
+  .chip-summer { background: #2a1a3a; color: #bf8fff; border: 1px solid #4a2a6a; }
+
+  .card-expand {
+    padding: 0 1.6rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.2s;
+  }
+  .card-expand.open { max-height: 800px; padding: 0 1.6rem 1.6rem; }
+
+  .expand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media(max-width: 768px) { .expand-grid { grid-template-columns: 1fr; } }
+
+  .pros-cons { }
+  .pc-title { font-size: 12px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .pros .pc-title { color: var(--accent3); }
+  .cons .pc-title { color: var(--accent); }
+  .pc-list { list-style: none; }
+  .pc-list li { font-size: 13px; color: var(--muted); padding: 4px 0; display: flex; gap: 8px; }
+  .pc-list li::before { flex-shrink: 0; margin-top: 2px; }
+  .pros .pc-list li::before { content: '↑'; color: var(--accent3); font-size: 11px; }
+  .cons .pc-list li::before { content: '↓'; color: var(--accent); font-size: 11px; }
+
+  .docs-section { margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid var(--border); }
+  .docs-title { font-size: 12px; font-weight: 600; color: var(--accent2); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .docs-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .doc-chip {
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+  }
+
+  .expand-toggle {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--border);
+    padding: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .expand-toggle:hover { color: var(--text); background: var(--surface2); }
+  .expand-toggle .arrow { transition: transform 0.3s; }
+  .expand-toggle.open .arrow { transform: rotate(180deg); }
+
+  /* QS BADGE */
+  .qs-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--warn);
+    background: #2a2010;
+    border: 1px solid #5a4020;
+    border-radius: 4px;
+    padding: 2px 7px;
+    white-space: nowrap;
+  }
+
+  /* INFO BOX */
+  .info-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 6px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 2rem;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .info-box strong { color: var(--text); }
+
+  /* HOW TO APPLY SECTION */
+  .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.3rem;
+  }
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+  .step-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .step-desc { font-size: 13px; color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+
+  /* RESULT COUNT */
+  .result-count { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">DS.GERMANY</span>
+  <div class="nav-links">
+    <a href="#universities">Universities</a>
+    <a href="#how-to-apply">How to Apply</a>
+    <a href="#deadlines">Key Deadlines</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">&#9670; Public University Guide 2026 / 2027</div>
+  <h1>Data Science Degrees<br>at <span>German Public Universities</span></h1>
+  <p>A comprehensive guide to Bachelor's programs in Data Science offered in English and German at Germany's top public universities — including admission requirements, deadlines, and documents needed for international students.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">10</span><span class="stat-label">Universities</span></div>
+    <div class="stat"><span class="stat-num">~€0</span><span class="stat-label">Avg Tuition (EU)</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">Intakes / Year</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Public Sector</span></div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter by</span>
+  <button class="filter-btn active" onclick="filterCards('all', this)">All (10)</button>
+  <button class="filter-btn" onclick="filterCards('english', this)">English Only</button>
+  <button class="filter-btn" onclick="filterCards('german', this)">German Only</button>
+  <button class="filter-btn" onclick="filterCards('both', this)">EN + DE</button>
+  <button class="filter-btn" onclick="filterCards('free', this)">Tuition-Free</button>
+  <input class="search-input" type="text" placeholder="Search university…" oninput="searchCards(this.value)">
+</div>
+
+<main>
+  <div id="universities">
+    <p class="section-title">Universities</p>
+    <div class="result-count" id="resultCount">Showing 10 of 10 programs</div>
+    <div class="info-box">
+      <strong>Note for international students:</strong> Most German public universities use <strong>uni-assist</strong> for processing international applications. Standard deadlines are <strong>July 15</strong> (winter semester) and <strong>January 15</strong> (summer semester). Always verify on the official university website as individual programs may differ.
+    </div>
+
+    <div class="uni-grid" id="uniGrid">
+      <!-- TU DORTMUND -->
+      <div class="uni-card" data-lang="both" data-fee="free" data-name="tu dortmund">
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="uni-rank">QS 2026: #651–700</div>
+            <div class="uni-name">TU Dortmund University</div>
+            <div class="uni-location">📍 Dortmund, North Rhine-Westphalia</div>
+          </div>
+          <div>
+            <div class="card-tags">
+              <span class="tag tag-both">EN + DE</span>
+              <span class="tag tag-free">Tuition-Free</span>
+            </div>
+            <div style="margin-top:6px"><span class="qs-badge">★ Best DS Bachelor in Germany</span></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="info-block">
+            <div class="info-label">Program</div>
+            <div class="info-val">B.Sc. Data Science<br><strong>6 semesters · 180 ECTS</strong></div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">Language</div>
+            <div class="info-val">German (main)<br>English modules available</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">2027 Deadlines</div>
+            <div class="info-val">
+              <span class="deadline-chip chip-winter">Winter: Jul 15, 2026</span>
+              <span class="deadline-chip chip-summer">Summer: Jan 15, 2027</span>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">Tuition</div>
+            <div class="info-val">~€300/semester (contribution only)</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">German Language</div>
+            <div class="info-val">DSH-2 or TestDaF 4×4 required</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">English Requirement</div>
+            <div class="info-val">Not mandatory for DE-taught track</div>
+          </div>
+        </div>
+        <div class="card-expand" id="exp1">
+          <div class="expand-grid">
+            <div class="pros-cons pros">
+              <div class="pc-title">✦ Strengths</div>
+              <ul class="pc-list">
+                <li>Only dedicated B.Sc. Data Science at a major German research university</li>
+                <li>Strong statistics & mathematics foundation</li>
+                <li>Feeds directly into M.Sc. Data Science program</li>
+                <li>Open admission (no NC) — easier entry</li>
+                <li>Industry connections in Ruhr region (tech & manufacturing)</li>
+              </ul>
+            </div>
+            <div class="pros-cons cons">
+              <div class="pc-title">✦ Challenges</div>
+              <ul class="pc-list">
+                <li>Program mainly in German — requires DSH-2/TestDaF</li>
+                <li>Dortmund has lower international appeal vs Munich/Berlin</li>
+                <li>Limited English-only course options at bachelor level</li>
+                <li>City is less vibrant for networking compared to Berlin</li>
+              </ul>
+            </div>
+          </div>
+          <div class="docs-section">
+            <div class="docs-title">📄 Required Documents</div>
+            <div class="docs-grid">
+              <span class="doc-chip">High School Diploma (Abitur equivalent)</span>
+              <span class="doc-chip">German Language Certificate (DSH-2 / TestDaF)</span>
+              <span class="doc-chip">Passport / ID</span>
+              <span class="doc-chip">Uni-assist application (non-EU)</span>
+              <span class="doc-chip">Certified translations (if not in German/English)</span>
+              <span class="doc-chip">Blocked account proof (€11,208/yr)</span>
+              <span class="doc-chip">Health insurance</span>
+              <span class="doc-chip">Motivation letter (recommended)</span>
+            </div>
+          </div>
+          <div style="margin-top:1rem; font-size:12px; color: var(--muted);">🔗 Official: <a href="https://statistik.tu-dortmund.de/en/studies/degrees/data-science-bsc/" target="_blank" style="color:var(--accent2)">statistik.tu-dortmund.de</a></div>
+        </div>
+        <button class="expand-toggle" onclick="toggleCard(1, this)"><span class="arrow">▼</span> Show full details & pros/cons</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Compiled from official university websites, DAAD database, and uni-assist guidelines. Last updated June 2026.</p>
+  <p style="margin-top:0.5rem;">Sources: <a href="https://www.daad.de" target="_blank">DAAD</a> · <a href="https://www.uni-assist.de" target="_blank">uni-assist</a> · Individual university official pages</p>
+  <p style="margin-top:0.5rem; color: #444;">Always verify information directly with the university before applying.</p>
+</footer>
+
+<script>
+  function toggleCard(id, btn) {
+    const exp = document.getElementById('exp' + id);
+    exp.classList.toggle('open');
+    btn.classList.toggle('open');
+    btn.innerHTML = exp.classList.contains('open')
+      ? '<span class="arrow" style="transform:rotate(180deg)">▼</span> Hide details'
+      : '<span class="arrow">▼</span> Show full details & pros/cons';
+  }
+
+  function filterCards(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cards = document.querySelectorAll('.uni-card');
+    let count = 0;
+    cards.forEach(card => {
+      const lang = card.dataset.lang;
+      const fee = card.dataset.fee;
+      let show = false;
+      if (type === 'all') show = true;
+      else if (type === 'english' && (lang === 'english' || lang === 'both')) show = true;
+      else if (type === 'german' && (lang === 'german' || lang === 'both')) show = true;
+      else if (type === 'both' && lang === 'both') show = true;
+      else if (type === 'free' && fee === 'free') show = true;
+      card.classList.toggle('hidden', !show);
+      if (show) count++;
+    });
+    document.getElementById('resultCount').textContent = `Showing ${count} of 10 programs`;
+  }
+
+  function searchCards(val) {
+    const q = val.toLowerCase();
+    const cards = document.querySelectorAll('.uni-card');
+    let count = 0;
+    cards.forEach(card => {
+      const name = card.dataset.name;
+      const show = !q || name.includes(q);
+      card.classList.toggle('hidden', !show);
+      if (show) count++;
+    });
+    document.getElementById('resultCount').textContent = `Showing ${count} of 10 programs`;
+  }
+</script>
+</body>
+</html>
